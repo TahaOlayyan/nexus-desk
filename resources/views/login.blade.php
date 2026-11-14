@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Desk - Portal Login</title>
-    <!-- ربط أيقونة المتصفح (Favicon) لتظهر فوق بالتاب -->
+    <!-- (Favicon) -->
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -18,7 +18,7 @@
             <!-- Logo Image -->
             <img src="{{ asset('images/logo.png') }}" alt="Nexus Desk Logo" class="h-28 mx-auto mb-4 object-contain">
 
-            
+
             <h1 class="text-2xl font-bold text-white tracking-tight">Nexus Desk Portal</h1>
             <p class="text-sm text-slate-400 mt-1">Sign in to your organization account</p>
         </div>

@@ -19,9 +19,14 @@
             <div>
                 <!-- معلومات العميل والشركة ديناميكية -->
                 <div class="flex items-center gap-3 px-2 py-2 bg-slate-900/40 rounded-xl border border-slate-800">
+                    <!-- فحص: إذا في صورة اعرضها، إذا لأ اعرض الحرفين -->
+                    @if(Auth::user()->avatar)
+                    <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profile" class="w-10 h-10 rounded-lg object-cover shadow-lg shadow-emerald-900/30 border border-slate-700">
+                    @else
                     <div class="w-10 h-10 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-900/30">
                         {{ substr(Auth::user()->company->name, 0, 2) }}
                     </div>
+                    @endif
                     <div>
                         <strong class="block text-white text-sm font-semibold tracking-tight">{{ Auth::user()->company->name }}</strong>
                         <span class="text-xs text-slate-400 flex items-center gap-1">
@@ -35,9 +40,13 @@
                         <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/40">
-                        <i data-lucide="cpu" class="w-4 h-4"></i>
+                    <a href="{{ route('client.assets') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition text-sm font-medium {{ request()->routeIs('client.assets') ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:text-white hover:bg-slate-800/40' }}">
+                        <i data-lucide="server" class="w-4 h-4"></i>
                         <span>My Assets</span>
+                    </a>
+                    <a href="{{ route('client.settings') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition text-sm font-medium {{ request()->routeIs('client.settings') ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:text-white hover:bg-slate-800/40' }}">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                        <span>Settings</span>
                     </a>
                 </nav>
             </div>

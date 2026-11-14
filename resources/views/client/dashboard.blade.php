@@ -12,7 +12,16 @@
     </button>
 </div>
 
-<!-- الإحصائيات (مربوطة بالداتابيس) -->
+@if(session('success'))
+<div class="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm flex items-center justify-between shadow-lg">
+    <div class="flex items-center gap-2">
+        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+        <span>{{ session('success') }}</span>
+    </div>
+    <span class="text-xs text-emerald-500/80">Just now</span>
+</div>
+@endif
+
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
     <div class="bg-[#0b1222] border border-slate-800/80 rounded-2xl p-5 shadow-sm">
         <div class="flex items-center justify-between">
@@ -45,7 +54,6 @@
     </div>
 </div>
 
-<!-- جدول التذاكر (مربوط بالداتابيس باستخدام foreach) -->
 <div class="bg-[#0b1222] border border-slate-800/80 rounded-2xl overflow-hidden shadow-xl">
     <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
         <h2 class="text-sm font-semibold text-white">Recent Branch Tickets</h2>
@@ -69,11 +77,11 @@
                     <td class="px-6 py-4 font-medium text-white">{{ $ticket->asset->name }}</td>
                     <td class="px-6 py-4">
                         @if($ticket->priority == 'P1')
-                            <span class="px-2.5 py-1 rounded-md text-xs font-semibold border bg-red-500/10 text-red-400 border-red-500/20">P1</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-semibold border bg-red-500/10 text-red-400 border-red-500/20">P1</span>
                         @elseif($ticket->priority == 'P2')
-                            <span class="px-2.5 py-1 rounded-md text-xs font-semibold border bg-amber-500/10 text-amber-400 border-amber-500/20">P2</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-semibold border bg-amber-500/10 text-amber-400 border-amber-500/20">P2</span>
                         @else
-                            <span class="px-2.5 py-1 rounded-md text-xs font-semibold border bg-slate-500/10 text-slate-400 border-slate-500/20">P3</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-semibold border bg-slate-500/10 text-slate-400 border-slate-500/20">P3</span>
                         @endif
                     </td>
                     <td class="px-6 py-4 font-medium
@@ -92,7 +100,6 @@
     </div>
 </div>
 
-<!-- Modal إنشاء تذكرة جديدة (لساته ثابت مؤقتاً، رح نبرمجه بالخطوة الجاية) -->
 <div id="ticketModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-[#0b1222] border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl">
         <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-800">
@@ -100,7 +107,8 @@
             <span class="text-xs text-slate-400">Branch incident</span>
         </div>
 
-        <form id="newTicketForm" class="space-y-4">
+        <form action="{{ route('client.tickets.store') }}" method="POST" class="space-y-4">
+            @csrf
             <div>
                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Category</label>
                 <select name="category" required class="w-full bg-[#030712] border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500">
@@ -110,13 +118,18 @@
                     <option value="Network">Network</option>
                 </select>
             </div>
+
             <div>
                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Asset</label>
                 <select name="asset_id" required class="w-full bg-[#030712] border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500">
-                    <!-- رح نعبيهم ديناميكياً الخطوة الجاية -->
-                    <option value="1">Cisco Core Switch</option>
+                    <option value="" disabled selected>Select an asset...</option>
+
+                    @foreach($assets as $asset)
+                    <option value="{{ $asset->id }}">{{ $asset->name }} ({{ $asset->serial_number }})</option>
+                    @endforeach
                 </select>
             </div>
+
             <div>
                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Priority</label>
                 <select name="priority" required class="w-full bg-[#030712] border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500">
@@ -125,10 +138,12 @@
                     <option value="P3" selected>P3 - Standard</option>
                 </select>
             </div>
+
             <div>
                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Description</label>
                 <textarea name="description" rows="3" required placeholder="Detailed failure symptoms..." class="w-full bg-[#030712] border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500"></textarea>
             </div>
+
             <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
                 <button type="button" id="closeModalBtn" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-400 hover:text-white cursor-pointer">Cancel</button>
                 <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-xl text-sm font-semibold transition cursor-pointer">Submit Ticket</button>
@@ -146,6 +161,8 @@
 
     openBtn.onclick = () => modal.classList.remove("hidden");
     closeBtn.onclick = () => modal.classList.add("hidden");
-    window.onclick = (e) => { if (e.target === modal) modal.classList.add("hidden"); };
+    window.onclick = (e) => {
+        if (e.target === modal) modal.classList.add("hidden");
+    };
 </script>
 @endpush
