@@ -36,15 +36,50 @@
                 <input type="email" name="email" required placeholder="e.g., yourname@organization.com" value="{{ old('email') }}" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500">
                 <span class="text-xs text-slate-500 mt-1 block">Enter the registered email provided by your IT department.</span>
             </div>
+            <!-- Password Field -->
             <div>
-                <label class="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
-                <input type="password" name="password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500">
+                <label for="password" class="block text-sm font-semibold text-white mb-2">Password</label>
+                <div class="relative">
+                    <input type="password" name="password" id="password" required
+                        class="w-full bg-[#030712] border border-slate-800 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition shadow-inner">
+
+                    <!-- Show && Hide Password-->
+                    <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition focus:outline-none">
+                        <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                @error('password')
+                <p class="text-red-400 text-xs mt-2 font-medium">{{ $message }}</p>
+                @enderror
             </div>
             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-lg shadow-blue-600/20 cursor-pointer">
                 Sign In
             </button>
         </form>
     </div>
+
+    <script>
+        src = "https://unpkg.com/lucide@latest"
+
+        // Password Show && Hide
+        lucide.createIcons();
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.setAttribute('data-lucide', 'eye');
+            }
+
+            lucide.createIcons();
+        }
+    </script>
 </body>
 
 </html>
