@@ -34,9 +34,17 @@
                 </div>
 
                 <nav class="mt-6 md:mt-8 flex flex-row md:flex-col gap-1.5 overflow-x-auto">
-                    <a href="{{ route('tech.workspace') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition {{ request()->routeIs('tech.workspace') ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:text-white hover:bg-slate-800/40' }}">
+                    <a href="{{ route('tech.workspace') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition {{ request()->routeIs('tech.workspace', 'tech.tickets.*') ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:text-white hover:bg-slate-800/40' }}">
                         <i data-lucide="layers" class="w-4 h-4"></i>
                         <span>Workspace</span>
+                    </a>
+                    <a href="{{ route('tech.history') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition {{ request()->routeIs('tech.history') ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:text-white hover:bg-slate-800/40' }}">
+                        <i data-lucide="history" class="w-4 h-4"></i>
+                        <span>Resolved History</span>
+                    </a>
+                    <a href="{{ route('tech.settings') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition {{ request()->routeIs('tech.settings') ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:text-white hover:bg-slate-800/40' }}">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                        <span>Settings</span>
                     </a>
                 </nav>
             </div>
